@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.6"
+
+sudo: false
+cache: pip
+
+install: "pip install sphinx"
+script: sphinx-build -nWT -b dummy . _build/html

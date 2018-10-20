@@ -1,0 +1,7 @@
+Bollywood
+---------
+
+.. toctree::
+   :glob:
+
+   *
