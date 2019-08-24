@@ -6,4 +6,14 @@ sudo: false
 cache: pip
 
 install: "pip install sphinx sphinx-rtd-theme"
-script: sphinx-build -b dummy . _build
+script: sphinx-build -b html . _build
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: _build
+  github_token: $MyKey  # Set in the settings page of your repository, as a secure variable
+  repo: raas-garba/raas-garba.github.io
+  keep_history: false
+  on:
+    branch: master
