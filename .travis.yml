@@ -12,9 +12,9 @@ deploy:
   provider: pages
   skip_cleanup: true
   local_dir: _build
-  github_token: $MyKey  # Set in the settings page of your repository, as a secure variable
+  github_token: $GITHUB_TOKEN
   repo: raas-garba/raas-garba.github.io
-  target: master
+  target_branch: master
   keep_history: false
   on:
     branch: master
