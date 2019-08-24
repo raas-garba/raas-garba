@@ -6,4 +6,4 @@ sudo: false
 cache: pip
 
 install: "pip install sphinx sphinx-rtd-theme"
-script: sphinx-build -nWT -b dummy . _build/html
+script: sphinx-build -b dummy . _build
