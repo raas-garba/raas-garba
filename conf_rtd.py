@@ -5,7 +5,7 @@
 
 # -- Project information -----------------------------------------------------
 project = 'રાસ-ગરબા સંગ્રહ'
-copyright = '2013-2018, P Adhia'
+copyright = '2013-2019, P Adhia'
 author = 'P Adhia'
 
 # The short X.Y version

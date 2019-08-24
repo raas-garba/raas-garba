@@ -2,8 +2,9 @@
 "Check symlinks to songs"
 
 __author__ = "Paresh Adhia"
-__copyright__ = "Copyright 2018, Paresh Adhia"
+__copyright__ = "Copyright 2018-2019, Paresh Adhia"
 
+from typing import Iterable
 from pathlib import Path
 import logging
 
@@ -15,7 +16,7 @@ def main():
 
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument('path', nargs='*', default=[Path.cwd()], type=Path, help='directories to fix')
-	parser.add_argument('--libpath', default=(Path.home() / 'raas-garba' / 'lib'), type=Path, help='library path')
+	parser.add_argument('--libpath', default=(Path.home() / 'repos' / 'raas-garba' / 'lib'), type=Path, help='library path')
 	args = parser.parse_args()
 
 	libs.extend((args.libpath / p) for p in ['આરતી', 'ગરબા', 'રાસ', 'શ્લોક', 'bollywood'])
@@ -47,7 +48,7 @@ def fix_dir(dir_path: Path) -> None:
 		else:
 			logging.error('%s cannot be found', str(l))
 
-def read_entries(fname: Path):
+def read_entries(fname: Path) -> Iterable[str]:
 	import re
 
 	with open(fname) as f:
