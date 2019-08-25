@@ -4,62 +4,45 @@
 __author__ = "Paresh Adhia"
 __copyright__ = "Copyright 2018-2019, Paresh Adhia"
 
-from typing import Iterable, Dict
+from typing import Iterable, Dict, Optional, Sequence
 from pathlib import Path
 from os.path import relpath, commonpath
 import logging
 import sys
+import re
 
-def main():
+def main(paths: Sequence[Path], libpath: Path) -> int:
 	"script entry-point"
-	import argparse
+	lib = {p.name: p for p in libpath.resolve().rglob('*.rst') if p.name != 'index.rst'}
 
-	parser = argparse.ArgumentParser(description=__doc__)
-	parser.add_argument('paths', nargs='*', default=[Path.cwd()], type=Path, help='directories to fix')
-	parser.add_argument('--libpath', default=None, type=Path, help='library path')
-	args = parser.parse_args()
-
-	if not args.libpath:
-		args.libpath = Path(sys.argv[0]).parent / 'lib'
-
-	lib = {p.name: p for p in args.libpath.resolve().rglob('*.rst') if p.name != 'index.rst'}
-
-	for p in args.paths:
-		for i in p.rglob('index.rst'):
-			fix_dir(i.parent.resolve(), lib)
-
-def fix_dir(dir_path: Path, lib: Dict[str, Path]) -> None:
-	print(dir_path)
-
-	for p in dir_path.glob('*'):
-		if p.is_symlink() and not p.exists():
-			p.unlink()
-			print(f"  -{p}")
-
-	for l in read_entries(dir_path / 'index.rst'):
-		ln = dir_path / l
-
-		if ln.exists():
-			continue
-
-		if ln.name in lib:
-			base = rel_link(ln, lib[ln.name])
-			ln.symlink_to(base)
-			print(f"  +{ln} -> {base}")
+	missing = linked = 0
+	for e in new_entries(paths):
+		b = lib.get(e.name, None)
+		if b:
+			e.symlink_to(rel_link(e, b))
+			linked += 1
 		else:
-			logging.error('%s cannot be found', str(l))
+			missing += 1
+			logging.error(f"'{e.name}' in '{e.parent}' not found")
+	print(f"Entries linked={linked}, missing={missing}")
 
-def read_entries(fname: Path) -> Iterable[str]:
-	import re
+	return 1 if missing > 0 else 0
 
-	with open(fname) as f:
-		for line in f.read().split('\n'):
-			m = re.fullmatch(r'\s*.*<(.*\.rst)>', line)
-			if m:
-				yield m.group(1)
-			m = re.fullmatch(r'\s*(.*\.rst)', line)
-			if m:
-				yield m.group(1)
+def new_entries(paths: Sequence[Path]) -> Iterable[Path]:
+	all_toc = (i for p in paths for i in p.resolve().rglob('index.rst'))
+	toc_lines = ((t, l) for t in all_toc for l in t.read_text().split('\n'))
+	all_entries = filter(None, (entry(t.parent, l) for t, l in toc_lines))
+	only_new = filter(lambda e: not e.exists(), all_entries)
+
+	return only_new
+
+def entry(dirpath: Path, line: str) -> Optional[str]:
+	m = re.fullmatch(r'\s*.*<(.*\.rst)>', line)
+	if m:
+		return dirpath / m.group(1)
+	m = re.fullmatch(r'\s*(.*\.rst)', line)
+	if m:
+		return dirpath / m.group(1)
 
 def rel_link(link: Path, base: Path):
 	c = commonpath([base, link])
@@ -67,5 +50,14 @@ def rel_link(link: Path, base: Path):
 
 	return Path('/'.join(['..'] * up)) / base.relative_to(c)
 
+def getargs():
+	import argparse
+
+	parser = argparse.ArgumentParser(description=__doc__)
+	parser.add_argument('paths', nargs='*', default=[Path.cwd()], type=Path, help='directories to fix')
+	parser.add_argument('--libpath', default=(Path(sys.argv[0]).parent / 'lib'), type=Path, help='library path')
+
+	return parser.parse_args()
+
 if __name__ == '__main__':
-	sys.exit(main())
+	sys.exit(main(**getargs().__dict__))
