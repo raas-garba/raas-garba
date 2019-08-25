@@ -22,10 +22,12 @@ clean:
 push: html
 	@cd $(BUILDDIR)/html; git add .; git ci -m 'rebuilt docs'; git push --force -u origin master
 
-.PHONY: push clean help Makefile
+links:
+	@$(SOURCEDIR)/fixln.py "$(SOURCEDIR)/year"
+
+.PHONY: push clean help Makefile links
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile
-	@$(SOURCEDIR)/fixln.py "$(SOURCEDIR)/year"
+%: Makefile links
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
