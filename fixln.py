@@ -4,28 +4,29 @@
 __author__ = "Paresh Adhia"
 __copyright__ = "Copyright 2018-2019, Paresh Adhia"
 
-from typing import Iterable
+from typing import Iterable, Dict
 from pathlib import Path
+from os.path import relpath, commonpath
 import logging
 
-libs = []
+PRJDIR = Path.home() / 'repos' / 'raas-garba'
 
 def main():
 	"script entry-point"
 	import argparse
 
 	parser = argparse.ArgumentParser(description=__doc__)
-	parser.add_argument('path', nargs='*', default=[Path.cwd()], type=Path, help='directories to fix')
-	parser.add_argument('--libpath', default=(Path.home() / 'repos' / 'raas-garba' / 'lib'), type=Path, help='library path')
+	parser.add_argument('paths', nargs='*', default=[Path.cwd()], type=Path, help='directories to fix')
+	parser.add_argument('--libpath', default=(PRJDIR / 'lib'), type=Path, help='library path')
 	args = parser.parse_args()
 
-	libs.extend((args.libpath / p) for p in ['આરતી', 'ગરબા', 'રાસ', 'શ્લોક', 'bollywood'])
+	lib = {p.name: p for p in args.libpath.resolve().rglob('*.rst') if p.name != 'index.rst'}
 
-	for p in args.path:
+	for p in args.paths:
 		for i in p.rglob('index.rst'):
-			fix_dir(i.parent)
+			fix_dir(i.parent.resolve(), lib)
 
-def fix_dir(dir_path: Path) -> None:
+def fix_dir(dir_path: Path, lib: Dict[str, Path]) -> None:
 	print(dir_path)
 
 	for p in dir_path.glob('*'):
@@ -39,12 +40,10 @@ def fix_dir(dir_path: Path) -> None:
 		if ln.exists():
 			continue
 
-		f = next((lib / l for lib in libs if (lib / l).exists()), None)
-		if f:
-			from os.path import relpath
-			rp = Path(relpath(f, dir_path))
-			ln.symlink_to(rp)
-			print(f"  +{ln} -> {rp}")
+		if ln.name in lib:
+			base = rel_link(ln, lib[ln.name])
+			ln.symlink_to(base)
+			print(f"  +{ln} -> {base}")
 		else:
 			logging.error('%s cannot be found', str(l))
 
@@ -59,6 +58,12 @@ def read_entries(fname: Path) -> Iterable[str]:
 			m = re.fullmatch(r'\s*(.*\.rst)', line)
 			if m:
 				yield m.group(1)
+
+def rel_link(link: Path, base: Path):
+	c = commonpath([base, link])
+	up = len(link.relative_to(c).parts)-1
+
+	return Path('/'.join(['..'] * up)) / base.relative_to(c)
 
 if __name__ == '__main__':
 	import sys

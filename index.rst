@@ -22,9 +22,6 @@
    :caption: Library
    :maxdepth: 1
 
-   lib/શ્લોક/index.rst
-   lib/ગરબા/index.rst
-   lib/રાસ/index.rst
-   lib/આરતી/index.rst
-   lib/સ્તુતિ/index.rst
+   lib/રાસ-ગરબા/index.rst
    lib/bollywood/index.rst
+   lib/શ્લોક-આરતી/index.rst
