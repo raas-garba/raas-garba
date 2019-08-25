@@ -23,7 +23,7 @@ push: html
 	@cd $(BUILDDIR)/html; git add .; git ci -m 'rebuilt docs'; git push --force -u origin master
 
 links:
-	@$(SOURCEDIR)/fixln.py "$(SOURCEDIR)/year"
+	@$(SOURCEDIR)/mklinks.py "$(SOURCEDIR)/year"
 
 .PHONY: push clean help Makefile links
 

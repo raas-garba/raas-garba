@@ -8,8 +8,7 @@ from typing import Iterable, Dict
 from pathlib import Path
 from os.path import relpath, commonpath
 import logging
-
-PRJDIR = Path.home() / 'repos' / 'raas-garba'
+import sys
 
 def main():
 	"script entry-point"
@@ -17,8 +16,11 @@ def main():
 
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument('paths', nargs='*', default=[Path.cwd()], type=Path, help='directories to fix')
-	parser.add_argument('--libpath', default=(PRJDIR / 'lib'), type=Path, help='library path')
+	parser.add_argument('--libpath', default=None, type=Path, help='library path')
 	args = parser.parse_args()
+
+	if not args.libpath:
+		args.libpath = Path(sys.argv[0]).parent / 'lib'
 
 	lib = {p.name: p for p in args.libpath.resolve().rglob('*.rst') if p.name != 'index.rst'}
 
@@ -66,5 +68,4 @@ def rel_link(link: Path, base: Path):
 	return Path('/'.join(['..'] * up)) / base.relative_to(c)
 
 if __name__ == '__main__':
-	import sys
 	sys.exit(main())
