@@ -13,7 +13,9 @@ import re
 
 def main(paths: Sequence[Path], libpath: Path) -> int:
 	"script entry-point"
-	lib = {p.name: p for p in libpath.resolve().rglob('*.rst') if p.name != 'index.rst'}
+
+	# a dictionary of all entries for looking up file path using base file name
+	lib: Dict[str, Path] = {p.name: p for p in libpath.resolve().rglob('*.rst') if p.name != 'index.rst'}
 
 	missing = linked = 0
 	for e in new_entries(paths):
@@ -29,6 +31,7 @@ def main(paths: Sequence[Path], libpath: Path) -> int:
 	return 1 if missing > 0 else 0
 
 def new_entries(paths: Sequence[Path]) -> Iterable[Path]:
+	"scan all paths to find toc, and return an iterable of toc entries that don't already exist"
 	all_toc = (i for p in paths for i in p.resolve().rglob('index.rst'))
 	toc_lines = ((t, l) for t in all_toc for l in t.read_text().split('\n'))
 	all_entries = filter(None, (entry(t.parent, l) for t, l in toc_lines))
@@ -37,6 +40,7 @@ def new_entries(paths: Sequence[Path]) -> Iterable[Path]:
 	return only_new
 
 def entry(dirpath: Path, line: str) -> Optional[str]:
+	"parse line of text and if found, return entry path in the given directory, else return None"
 	m = re.fullmatch(r'\s*.*<(.*\.rst)>', line)
 	if m:
 		return dirpath / m.group(1)
@@ -45,12 +49,14 @@ def entry(dirpath: Path, line: str) -> Optional[str]:
 		return dirpath / m.group(1)
 
 def rel_link(link: Path, base: Path):
+	"return link Path as relative to the base Path"
 	c = commonpath([base, link])
 	up = len(link.relative_to(c).parts)-1
 
 	return Path('/'.join(['..'] * up)) / base.relative_to(c)
 
 def getargs():
+	"script arguments; accept list paths to scan toc and root of library -- both optional"
 	import argparse
 
 	parser = argparse.ArgumentParser(description=__doc__)

@@ -9,12 +9,22 @@ install: "pip install sphinx sphinx-rtd-theme"
 script: make html
 
 deploy:
-  provider: pages
-  skip_cleanup: true
-  local_dir: _build/html
-  github_token: $GITHUB_TOKEN
-  repo: raas-garba/raas-garba.github.io
-  target_branch: master
-  keep_history: false
-  on:
-    branch: master
+  - provider: pages
+    skip_cleanup: true
+    local_dir: _build/html
+    github_token: $GITHUB_TOKEN
+    repo: raas-garba/raas-garba.github.io
+    target_branch: master
+    keep_history: false
+    on:
+      branch: master
+
+  - provider: pages
+    skip_cleanup: true
+    local_dir: _build/html
+    github_token: $GITHUB_TOKEN
+    repo: raas-garba/new
+    target_branch: master
+    keep_history: false
+    on:
+      branch: new
