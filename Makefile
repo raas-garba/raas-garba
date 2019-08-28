@@ -20,15 +20,15 @@ clean:
 $(BUILDDIR)/html/.git:
 	@cd $(BUILDDIR)/html; git init; git remote add origin git@github.com:raas-garba/raas-garba.github.io.git
 
-html:
-	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-	@touch "$(BUILDDIR)"/html/.nojekyll
-
 push: html $(BUILDDIR)/html/.git
 	@cd $(BUILDDIR)/html; git add .; git ci -m 'rebuilt docs'; git push --force -u origin master
 
 links:
 	@$(SOURCEDIR)/mklinks.py "$(SOURCEDIR)/year"
+
+html: Makefile links
+	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	@touch "$(BUILDDIR)"/html/.nojekyll
 
 .PHONY: push clean help Makefile links html
 
