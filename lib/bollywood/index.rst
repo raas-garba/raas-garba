@@ -120,6 +120,13 @@ U
 
    U/*
 
+W
+-
+.. toctree::
+   :glob:
+
+   W/*
+
 Y
 -
 .. toctree::

@@ -5,7 +5,7 @@
    :caption: ૨૦૧૯
    :maxdepth: 1
 
-   year/2019/kids/index.rst
+   year/2019/index.rst
 
 .. toctree::
    :caption: Past Years
@@ -24,4 +24,5 @@
 
    lib/રાસ-ગરબા/index.rst
    lib/bollywood/index.rst
+   lib/ભજન/index.rst
    lib/શ્લોક-આરતી/index.rst
