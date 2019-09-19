@@ -6,4 +6,5 @@ R
 .. toctree::
    :glob:
 
+   M/*
    R/*
