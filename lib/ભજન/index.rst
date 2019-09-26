@@ -1,6 +1,13 @@
 ભજન
 ===
 
+E
+-
+.. toctree::
+   :glob:
+
+   E/*
+
 M
 -
 .. toctree::
