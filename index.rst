@@ -28,3 +28,30 @@
    lib/bollywood/index.rst
    lib/ભજન/index.rst
    lib/શ્લોક-આરતી/index.rst
+
+
+Credits
+=======
+
+Contents
+--------
+All content that is not part of traditional folk or cultural music, notably all *bollywood songs* are copyrighted by their respective copyright holders.
+
+Music Composition
+-----------------
+Music for the live performances is composed by **Kirit Shukla** of Charlotte.
+
+Singers
+-------
+Alphabetical, but incomplete, list of current and past singers
+
+- **Brinda Dave**
+- **Dhwani Mehta**
+- **Dipti Adhia**
+- **Mitesh Parikh**
+- **Nimesh Bhat**
+- **Tejal Kothari**
+
+Website
+-------
+Content layout style on this website and the source code is copyrighted by Paresh Adhia.
