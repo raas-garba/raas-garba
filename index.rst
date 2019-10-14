@@ -37,13 +37,13 @@ Contents
 --------
 All content that is not part of traditional folk or cultural music, notably all *bollywood songs* are copyrighted by their respective copyright holders.
 
-Music Composition
------------------
-Music for the live performances is composed by **Kirit Shukla** of Charlotte.
+Music Adaptation
+----------------
+Music for the live performances is adapted by **Kirit Shukla** of Charlotte.
 
 Singers
 -------
-Alphabetical, but incomplete, list of current and past singers
+Alphabetical, but incomplete, list of current and recent past singers
 
 - **Brinda Dave**
 - **Dhwani Mehta**
