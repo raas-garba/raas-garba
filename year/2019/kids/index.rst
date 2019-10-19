@@ -24,7 +24,7 @@ Kids
    Twinkle Twinkle.rst
    રઘુપતિ રાઘવ.rst
    ABCD.rst
-   आओ बच्चों तुम्हें दिखाये.rst
+   वंदे मातरम.rst
 
 રાસ
 ---
