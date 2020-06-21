@@ -6,10 +6,11 @@ __copyright__ = "Copyright 2018-2019, Paresh Adhia"
 
 from typing import Iterable, Dict, Optional, Sequence
 from pathlib import Path
-from os.path import relpath, commonpath
+from os.path import commonpath
 import logging
 import sys
 import re
+
 
 def main(paths: Sequence[Path], libpath: Path) -> int:
 	"script entry-point"
@@ -30,6 +31,7 @@ def main(paths: Sequence[Path], libpath: Path) -> int:
 
 	return 1 if missing > 0 else 0
 
+
 def new_entries(paths: Sequence[Path]) -> Iterable[Path]:
 	"scan all paths to find toc, and return an iterable of toc entries that don't already exist"
 	all_toc = (i for p in paths for i in p.resolve().rglob('index.rst'))
@@ -38,6 +40,7 @@ def new_entries(paths: Sequence[Path]) -> Iterable[Path]:
 	only_new = filter(lambda e: not e.exists(), all_entries)
 
 	return only_new
+
 
 def entry(dirpath: Path, line: str) -> Optional[str]:
 	"parse line of text and if found, return entry path in the given directory, else return None"
@@ -48,12 +51,14 @@ def entry(dirpath: Path, line: str) -> Optional[str]:
 	if m:
 		return dirpath / m.group(1)
 
+
 def rel_link(link: Path, base: Path):
 	"return link Path as relative to the base Path"
 	c = commonpath([base, link])
 	up = len(link.relative_to(c).parts)-1
 
 	return Path('/'.join(['..'] * up)) / base.relative_to(c)
+
 
 def getargs():
 	"script arguments; accept list paths to scan toc and root of library -- both optional"
@@ -64,6 +69,7 @@ def getargs():
 	parser.add_argument('--libpath', default=(Path(sys.argv[0]).parent / 'lib'), type=Path, help='library path')
 
 	return parser.parse_args()
+
 
 if __name__ == '__main__':
 	sys.exit(main(**getargs().__dict__))

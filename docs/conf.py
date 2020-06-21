@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 project = 'રાસ-ગરબા સંગ્રહ'
-copyright = '2013-2019, P Adhia'
+copyright = '2013-2020, P Adhia'
 author = 'P Adhia'
 
-version = '2019'
+version = '2020'
 release = ''
 
 templates_path = ['_templates']
@@ -19,11 +19,10 @@ pygments_style = 'sphinx'
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {'collapse_navigation': False, 'display_version': False}
 
-def setup(app):
-    app.add_stylesheet('css/rtd_override.css')
 
-# html_theme = "alabaster"
-# html_theme_options = {'fixed_sidebar': True}
+def setup(app):
+    app.add_css_file('css/rtd_override.css')
+
 
 html_show_sourcelink = False
 html_show_sphinx = False

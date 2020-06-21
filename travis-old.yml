@@ -6,6 +6,7 @@ sudo: false
 cache: pip
 
 install: "pip install sphinx sphinx-rtd-theme"
+before_script: cd docs
 script: make html
 
 deploy:
