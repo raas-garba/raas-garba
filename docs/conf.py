@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 project = 'રાસ-ગરબા સંગ્રહ'
-copyright = '2013-2020, P Adhia'
+copyright = '2024, P Adhia'
 author = 'P Adhia'
 
-version = '2020'
+version = '2024'
 release = ''
 
 templates_path = ['_templates']
 source_suffix = '.rst'
 master_doc = 'index'
 
-language = None
+language = "en"
 
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 pygments_style = 'sphinx'
